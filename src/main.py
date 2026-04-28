@@ -143,7 +143,7 @@ if load_mode == "yes":
                 rebuild_cache = True
 
         if rebuild_cache:
-            TARGET_FOLDERS = ("/models/char/", "/models/props/", "/models/char/suits/", "/maps/")
+            TARGET_FOLDERS = ("/models/char/", "/models/props/", "/models/char/suits/", "/maps/", "/models/schoolhouse/dummy/")
             virtual_file_cache = []
             for mf_path in mf_files:
                 mf = Multifile()
@@ -3571,11 +3571,20 @@ class CogViewer(ShowBase):
                     skel_node.find(tie_to_show).show()
 
     def _swap_head_model(self, new_model_path):
-        if not new_model_path or not os.path.isfile(new_model_path):
+        if not new_model_path:
             return None
-        new_head = None
+            
+        vfs = VirtualFileSystem.getGlobalPtr()
+        panda_path = Filename.fromOsSpecific(new_model_path)
+        panda_path.makeTrueCase()
 
+        if not (os.path.isfile(new_model_path) or vfs.exists(panda_path)):
+            print(f"Warning: Could not find head model in OS or VFS: {new_model_path}")
+            return None
+        
+        new_head = None
         anim_dict = {}
+        
         if isinstance(self.head, Actor):
             if hasattr(self.head, "_anim_dict"):
                 anim_dict = self.head._anim_dict
@@ -3588,11 +3597,15 @@ class CogViewer(ShowBase):
 
         try:
             if anim_dict:
-                new_head = Actor(new_model_path, anim_dict)
+                new_head = Actor(panda_path, anim_dict)
             else:
-                new_head = loader.loadModel(new_model_path)
+                new_head = loader.loadModel(panda_path)
         except Exception as e:
-            new_head = loader.loadModel(new_model_path)
+            new_head = loader.loadModel(panda_path)
+            
+        if not new_head or new_head.isEmpty():
+            print(f"Warning: Failed to load head model from {panda_path}")
+            return None
 
         joint = self.actor.find('**/joint_head')
         if not joint.isEmpty():
@@ -3600,7 +3613,7 @@ class CogViewer(ShowBase):
         else:
             new_head.reparentTo(self.actor)
 
-        if hasattr(self, "head") and not self.head.isEmpty():
+        if hasattr(self, "head") and self.head is not None and not self.head.isEmpty():
             new_head.setPos(self.head.getPos())
             new_head.setHpr(self.head.getHpr())
             new_head.setScale(self.head.getScale())
@@ -3637,12 +3650,22 @@ class CogViewer(ShowBase):
 
             if cog_id == "majorplayer" and hasattr(self, 'control_panel'):
                 self.control_panel.suit_is_boogie.pack(anchor="w", padx=5, pady=2)
+            
+            vfs = VirtualFileSystem.getGlobalPtr()
+            panda_hw_path = Filename.fromOsSpecific(hw_head_model_path) if hw_head_model_path else Filename("")
 
-            if hw_head_model_path and os.path.exists(hw_head_model_path):
-                if check_stored: self.set_stored_vals()
-                self.head.detachNode()
-                self.head = self._swap_head_model(hw_head_model_path)
-                if check_stored: self.update_cog_attributes(None, True)
+            if hw_head_model_path and (os.path.isfile(hw_head_model_path) or vfs.exists(panda_hw_path)):
+                if check_stored:
+                    self.set_stored_vals()
+                
+                new_head = self._swap_head_model(hw_head_model_path)
+                if new_head is not None:
+                    if hasattr(self, 'head') and self.head is not None:
+                        self.head.detachNode()
+                    self.head = new_head
+                    
+                if check_stored:
+                    self.update_cog_attributes(None, True)
 
             use_hw_body = False
             if hw_body_model_path and os.path.exists(hw_body_model_path):
@@ -3810,10 +3833,18 @@ class CogViewer(ShowBase):
                 self.control_panel.suit_is_boogie.pack_forget()
                 self.control_panel.is_boogify_var.set(False)
 
-            if hw_head_model_path and os.path.exists(hw_head_model_path):
+            vfs = VirtualFileSystem.getGlobalPtr()
+            panda_hw_path = Filename.fromOsSpecific(hw_head_model_path) if hw_head_model_path else Filename("")
+
+            if hw_head_model_path and (os.path.isfile(hw_head_model_path) or vfs.exists(panda_hw_path)):
                 self.set_stored_vals()
-                self.head.detachNode()
-                self.head = self._swap_head_model(cog_data.get("head"))
+                
+                new_head = self._swap_head_model(cog_data.get("head"))
+                if new_head is not None:
+                    if hasattr(self, 'head') and self.head is not None:
+                        self.head.detachNode()
+                    self.head = new_head
+                    
                 self.update_cog_attributes(None, True)
 
             if "ttcc_ene_rainmaker" in cog_name:
