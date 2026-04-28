@@ -7,25 +7,22 @@ Hi! This tool is mainly used for viewing Corporate Clash Cogs as well as making 
 # Pre-requisites
 * [Panda3D](https://www.panda3d.org/download/)
 * [Python](https://www.python.org/downloads/)
-* [ImageMagick](https://imagemagick.org/script/download.php#windows) _Note: This one's optional, its only purpose is for cropping images._
 
-# Changelogs (Last Updated: December 17, 2025)
-* Fixed Upload Head Texture for Rainmaker, Firestarter and Count Erfit
-* Added Head Part Texture Button (Used for Firestarter's Fire and Rainmaker's Hair)
-* Added Department Heads (VP, CFO, CLO, CEO)
-* Added Suit Library
-* Added Upload Head Texture
-* Added Missing Props ( pls tell me if there are still missing ones because there are)
-* Added Colors Tabber
-* Added Pie Splat functionality
-* Take Screenshot now darkens the background for the screenshot frame, removing artifacting
-* I forgor
-* Removed Herobrine
+# Changelogs (Last Updated: April 28, 2026)
+* Added Auto-file mounting, to skip the extracting process entirely. (you will be prompted upon launch whether or not you'd like to load from the phase files directly or through the resources folder.)
+* Added Environments Tabber (this tabber lets you load in a model that acts as the "environment". you can also load additional models to act as background props.)
+* Added Battle Effects Tabber (contains Enraged, Soaked, Stunned, Sued, Zapped, Insured, Chilled and Frozen.)
+* Added a Make Skelecog toggle (by that effect, removed standalone Skelecog actors from the list.)
+* Added a Make GIF button (pressing this will screenshot all of the frames of the current Cog animation that is playing and compiles it all into a gif.)
+* Take Screenshot now auto-trims the screenshot (you no longer need to use an external photo manipulation program to trim them or download external apps like ImageMagick.)
+* Added an FOV Slider
+* Added a Cog Rotation Slider
+* probably introduced a ton of bugs too
   
 ## How to Download Updates
 * Simply download both the updated main.py and updated globals.py found in the src folder and replace the old main.py and old globals.py found in your Cog Viewer src folder.
 
-## How to use 
+## How to use (only do this if you chose the option to use the resources folder.)
 <b>FIRST ADD CORPORATE CLASH'S FILES:</b>
 * Paste all of your Corporate Clash .mf files in the resources folder.
 * Run extract.bat in the resources folder. This will unpack all your multifiles into phase folders. You can remove the .mf files afterwards
