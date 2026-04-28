@@ -17,6 +17,7 @@ Hi! This tool is mainly used for viewing Corporate Clash Cogs as well as making 
 * Take Screenshot now auto-trims the screenshot (you no longer need to use an external photo manipulation program to trim them or download external apps like ImageMagick.)
 * Added an FOV Slider
 * Added a Cog Rotation Slider
+* Added a Random Cog button (this button will randomly pick a Cog, randomly pick an animation, a head animation (if applicable) and screenshots it.)
 * probably introduced a ton of bugs too
   
 ## How to Download Updates
