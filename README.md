@@ -18,6 +18,7 @@ Hi! This tool is mainly used for viewing Corporate Clash Cogs as well as making 
 * Added an FOV Slider
 * Added a Cog Rotation Slider
 * Added a Random Cog button (this button will randomly pick a Cog, randomly pick an animation, a head animation (if applicable) and screenshots it.)
+* Fixed Skelecogs and Zapped Skelecogs not moving when Make GIF is pressed.
 * probably introduced a ton of bugs too
   
 ## How to Download Updates
@@ -171,7 +172,6 @@ Control+Z	    | Optional keybind to reset the camera.
 ### Known Bugs
 * Toggle virtualize can cause transparency issues. Examples include VP/Multislacker's lightbulb, Cog Boss HP lights, CLO's body shadow, and CEO's eyes.
 * When switching from a Manager with unique toggles (e.g. toggle costume, suit toggles) to a Boss Cog, these unique toggle options will persist.
-* The anchor prop has no texture.
 
 # Acknowledgements
 * [BoggTech's](https://github.com/BoggTech/) [VisorView](https://github.com/BoggTech/VisorView/tree/main) was used as a base and main inspiration for this program. Our utmost gratitude goes towards them.
