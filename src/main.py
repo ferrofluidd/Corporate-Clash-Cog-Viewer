@@ -5163,7 +5163,7 @@ class CogViewer(ShowBase):
 
     def update_frame(self, task):
         if not self.actor or self.current_animation == "zero":
-            print("Cannot take screenshot frames: No actor or animation selected.")
+            print("can not take screenshot frames: mo animation selected")
             if self.bool:
                 self.setBackgroundColor(0, 0, 0)
             else:
@@ -5171,27 +5171,53 @@ class CogViewer(ShowBase):
             return task.done
 
         total_frames = self.actor.getNumFrames(self.current_animation)
+        
+        active_head = self.get_active_head()
+        
         has_head_anim = False
         total_head_frames = 0
-        if hasattr(self, 'head') and self.head and self.current_head_animation != "zero":
+        if active_head and isinstance(active_head, Actor) and self.current_head_animation != "zero":
             try:
-                total_head_frames = self.head.getNumFrames(self.current_head_animation)
+                total_head_frames = active_head.getNumFrames(self.current_head_animation)
                 has_head_anim = True
             except:
                 has_head_anim = False
 
         if self.frame_index < total_frames:
             self.actor.stop()
-            if has_head_anim and hasattr(self.head, 'stop'):
-                self.head.stop()
+            if hasattr(self, 'skelecog') and self.skelecog: self.skelecog.stop()
+            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.stop()
+            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.stop()
+            if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor: self.prop_item1_actor.stop()
+            if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor: self.prop_item2_actor.stop()
+            
+            if has_head_anim and hasattr(active_head, 'stop'):
+                active_head.stop()
 
             self.actor.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'skelecog') and self.skelecog: self.skelecog.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.pose(self.current_animation, self.frame_index)
+
+            if hasattr(self, 'boss_parts') and self.boss_parts:
+                for part_name, part_actor in self.boss_parts.items():
+                    if part_name == "head": continue
+                    if isinstance(part_actor, Actor):
+                        part_actor.pose(self.current_animation, self.frame_index)
+
+            if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor and self.prop_item1_actor.getCurrentAnim():
+                p1_anim = self.prop_item1_actor.getCurrentAnim()
+                self.prop_item1_actor.pose(p1_anim, self.frame_index % self.prop_item1_actor.getNumFrames(p1_anim))
+                
+            if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor and self.prop_item2_actor.getCurrentAnim():
+                p2_anim = self.prop_item2_actor.getCurrentAnim()
+                self.prop_item2_actor.pose(p2_anim, self.frame_index % self.prop_item2_actor.getNumFrames(p2_anim))
 
             if has_head_anim:
                 head_frame = 0
                 if total_head_frames > 0:
                     head_frame = self.frame_index % total_head_frames
-                self.head.pose(self.current_head_animation, head_frame)
+                active_head.pose(self.current_head_animation, head_frame)
 
             self.graphicsEngine.renderFrame()
             screenshot_name = os.path.join(self.frame_folder_path, f"{self.frame_index:03d}.png")
@@ -5252,27 +5278,53 @@ class CogViewer(ShowBase):
             return task.done
 
         total_frames = self.actor.getNumFrames(self.current_animation)
+        
+        active_head = self.get_active_head()
+        
         has_head_anim = False
         total_head_frames = 0
-        if hasattr(self, 'head') and self.head and self.current_head_animation != "zero":
+        if active_head and isinstance(active_head, Actor) and self.current_head_animation != "zero":
             try:
-                total_head_frames = self.head.getNumFrames(self.current_head_animation)
+                total_head_frames = active_head.getNumFrames(self.current_head_animation)
                 has_head_anim = True
             except:
                 has_head_anim = False
 
         if self.frame_index < total_frames:
             self.actor.stop()
-            if has_head_anim and hasattr(self.head, 'stop'):
-                self.head.stop()
+            if hasattr(self, 'skelecog') and self.skelecog: self.skelecog.stop()
+            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.stop()
+            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.stop()
+            if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor: self.prop_item1_actor.stop()
+            if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor: self.prop_item2_actor.stop()
+
+            if has_head_anim and hasattr(active_head, 'stop'):
+                active_head.stop()
 
             self.actor.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'skelecog') and self.skelecog: self.skelecog.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.pose(self.current_animation, self.frame_index)
+
+            if hasattr(self, 'boss_parts') and self.boss_parts:
+                for part_name, part_actor in self.boss_parts.items():
+                    if part_name == "head": continue
+                    if isinstance(part_actor, Actor):
+                        part_actor.pose(self.current_animation, self.frame_index)
+
+            if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor and self.prop_item1_actor.getCurrentAnim():
+                p1_anim = self.prop_item1_actor.getCurrentAnim()
+                self.prop_item1_actor.pose(p1_anim, self.frame_index % self.prop_item1_actor.getNumFrames(p1_anim))
+                
+            if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor and self.prop_item2_actor.getCurrentAnim():
+                p2_anim = self.prop_item2_actor.getCurrentAnim()
+                self.prop_item2_actor.pose(p2_anim, self.frame_index % self.prop_item2_actor.getNumFrames(p2_anim))
 
             if has_head_anim:
                 head_frame = 0
                 if total_head_frames > 0:
                     head_frame = self.frame_index % total_head_frames
-                self.head.pose(self.current_head_animation, head_frame)
+                active_head.pose(self.current_head_animation, head_frame)
 
             self.graphicsEngine.renderFrame()
             screenshot_name = os.path.join(self.temp_frame_path, f"{self.frame_index:03d}.png")
@@ -7024,6 +7076,9 @@ class CogViewer(ShowBase):
         if "belt" in cog_data:
             belt = loader.loadModel(cog_data["belt"])
             belt.reparentTo(temp_head)
+        
+        if (not temp_head.find('**/brain').isEmpty()):
+            temp_head.find('**/brain').setScale(0.95)
 
         head_joint = temp_actor.find('**/joint_head')
         if not head_joint.isEmpty(): temp_head.reparentTo(head_joint)
