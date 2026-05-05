@@ -143,7 +143,8 @@ if load_mode == "yes":
                 rebuild_cache = True
 
         if rebuild_cache:
-            TARGET_FOLDERS = ("/models/char/", "/models/props/", "/models/char/suits/", "/maps/", "/models/schoolhouse/dummy/")
+            TARGET_FOLDERS = (
+            "/models/char/", "/models/props/", "/models/char/suits/", "/maps/", "/models/schoolhouse/dummy/")
             virtual_file_cache = []
             for mf_path in mf_files:
                 mf = Multifile()
@@ -190,6 +191,7 @@ import globals
 config_path = Filename.fromOsSpecific(globals.CONFIG_DIR)
 loadPrcFile(config_path)
 
+
 class ToolTip:
     def __init__(self, wrapper_widget, target_widget, text):
         self.widget = wrapper_widget
@@ -222,7 +224,7 @@ class ToolTip:
             self.widget.after_cancel(id)
 
     def showtip(self, event=None):
-        x, y, cx, cy = self.widget.bbox("insert") or (0,0,0,0)
+        x, y, cx, cy = self.widget.bbox("insert") or (0, 0, 0, 0)
         x += self.widget.winfo_rootx() + 25
         y += self.widget.winfo_rooty() + 20
         self.tipwindow = tw = tk.Toplevel(self.widget)
@@ -737,8 +739,9 @@ class ControlPanel(tk.Frame):
         zap_wrapper = ttk.Frame(master)
         zap_wrapper.pack(fill="x", pady=2)
         self.zapped_cb = ttk.Checkbutton(zap_wrapper, text="Zapped",
-                        variable=self.is_zapped_var,
-                        command=lambda: [self.app.toggle_zapped(self.is_zapped_var.get()), self.update_incompatibilities()])
+                                         variable=self.is_zapped_var,
+                                         command=lambda: [self.app.toggle_zapped(self.is_zapped_var.get()),
+                                                          self.update_incompatibilities()])
         self.zapped_cb.pack(anchor="w")
         ToolTip(zap_wrapper, self.zapped_cb, "Incompatible with Skelecogs.")
 
@@ -821,22 +824,22 @@ class ControlPanel(tk.Frame):
         frame.columnconfigure(0, weight=1)  # Column 1
         frame.columnconfigure(1, weight=1)  # Column 2
         frame.columnconfigure(2, weight=1)  # Column 3
-        frame.grid_rowconfigure(5, weight=10000)  # Fixes the buttons next to suit toggles stretching out
+        frame.grid_rowconfigure(6, weight=10000)  # Fixes the buttons next to suit toggles stretching out
 
         # MAIN TAB COLUMN 1
-        # Autoplay Animation Toggle
-        ttk.Checkbutton(frame, text="Autoplay Animations", variable=self.is_autoplay_var,
-                        command=self.app.autoplay_animations).grid(row=0, column=0, sticky="w", pady=2)
-        # Cog Shadow Toggle
-        ttk.Checkbutton(frame, text="Toggle Shadow", variable=self.is_shadow_var,
-                        command=self.app.toggle_shadow).grid(row=1, column=0, sticky="w", pady=2)
-        # Cog Body Toggle
-        self.body_toggle_btn = ttk.Checkbutton(frame, text="Toggle Body", variable=self.is_body_var,
-                                               command=self.app.toggle_body)
-        self.body_toggle_btn.grid(row=2, column=0, sticky="w", pady=2)
+        suit_frame = ttk.Labelframe(frame, text="Toggles")
+        suit_frame.grid(row=0, column=0, rowspan=6, sticky="nsew", padx=5, pady=0)
 
-        suit_frame = ttk.Labelframe(frame, text="Suit Toggles")
-        suit_frame.grid(row=3, column=0, rowspan=3, sticky="nsew", padx=5, pady=0)
+        # Autoplay Animation Toggle
+        ttk.Checkbutton(suit_frame, text="Autoplay Animations", variable=self.is_autoplay_var,
+                        command=self.app.autoplay_animations).pack(anchor="w", padx=5)
+        # Cog Shadow Toggle
+        ttk.Checkbutton(suit_frame, text="Toggle Shadow", variable=self.is_shadow_var,
+                        command=self.app.toggle_shadow).pack(anchor="w", padx=5)
+        # Cog Body Toggle
+        self.body_toggle_btn = ttk.Checkbutton(suit_frame, text="Toggle Body", variable=self.is_body_var,
+                                               command=self.app.toggle_body)
+        self.body_toggle_btn.pack(anchor="w", padx=5)
 
         # Standard Toggles
         self.is_executive_var = tk.BooleanVar(value=False)
@@ -862,8 +865,9 @@ class ControlPanel(tk.Frame):
         self.skel_wrapper = ttk.Frame(suit_frame)
         self.skel_wrapper.pack(fill="x", pady=0)
         self.skelecog_cb = ttk.Checkbutton(self.skel_wrapper, text="Make Skelecog",
-                        variable=self.is_skelecog_var,
-                        command=lambda: [self.app.toggle_skelecog(self.is_skelecog_var.get()), self.update_incompatibilities()])
+                                           variable=self.is_skelecog_var,
+                                           command=lambda: [self.app.toggle_skelecog(self.is_skelecog_var.get()),
+                                                            self.update_incompatibilities()])
         self.skelecog_cb.pack(anchor="w", padx=5)
         ToolTip(self.skel_wrapper, self.skelecog_cb, "Incompatible with Zapped.")
 
@@ -877,7 +881,7 @@ class ControlPanel(tk.Frame):
 
         # UNIQUE TOGGLES START
         self.unique_frame = ttk.Labelframe(frame, text="Unique Toggles")
-        self.unique_frame.grid(row=5, column=1, columnspan=2, rowspan=3, sticky="nsew", padx=5, pady=0)
+        self.unique_frame.grid(row=6, column=0, columnspan=3, rowspan=3, sticky="nsew", padx=5, pady=0)
         self.unique_frame.grid_remove()
 
         self.unique_canvas = tk.Canvas(self.unique_frame, highlightthickness=0, height=120)
@@ -948,7 +952,7 @@ class ControlPanel(tk.Frame):
         self.fov_var = tk.DoubleVar(value=self.fov_default)
 
         fov_frame = ttk.Frame(frame)
-        fov_frame.grid(row=8, column=0, columnspan=3, sticky="ew", padx=5, pady=(10, 5))
+        fov_frame.grid(row=9, column=0, columnspan=3, sticky="ew", padx=5, pady=(10, 5))
         fov_frame.columnconfigure(1, weight=1)
 
         # Label
@@ -973,7 +977,7 @@ class ControlPanel(tk.Frame):
         self.rotation_var = tk.DoubleVar(value=180.0)
 
         rot_frame = ttk.Frame(frame)
-        rot_frame.grid(row=9, column=0, columnspan=3, sticky="ew", padx=5, pady=(0, 10))
+        rot_frame.grid(row=10, column=0, columnspan=3, sticky="ew", padx=5, pady=(0, 10))
         rot_frame.columnconfigure(1, weight=1)
 
         ttk.Label(rot_frame, text="Rotation", width=12, anchor="w").grid(row=0, column=0, padx=(0, 5))
@@ -1355,7 +1359,7 @@ class ControlPanel(tk.Frame):
             suit_notebook.add(tex_frame, text=category)
 
         # -------- SUIT MODELS --------#
-        valid_keys = [k for k in globals.SUIT_MODEL_DICT.keys() if k not in ["boss"]]      # fuDGE you bosscog model
+        valid_keys = [k for k in globals.SUIT_MODEL_DICT.keys() if k not in ["boss"]]  # fuDGE you bosscog model
         suit_model_names = [(globals.SUIT_MODEL_NAMES[k], k) for k in valid_keys]
 
         suit_mod_notebook = ttk.Notebook(master)
@@ -1785,17 +1789,17 @@ class ControlPanel(tk.Frame):
 
     def show_body_toggle(self, show=True):
         if show:
-            self.body_toggle_btn.grid()
+            self.body_toggle_btn.pack(anchor="w", padx=5)
         else:
-            self.body_toggle_btn.grid_remove()
-    
+            self.body_toggle_btn.pack_forget()
+
     def update_incompatibilities(self):
         if not hasattr(self, 'zapped_cb') or not hasattr(self, 'skelecog_cb'):
             return
-            
+
         active_suit = getattr(self.app, 'suit_type', '')
         is_skel_mod = self.selected_suit_mod_var.get() in ["as", "bs", "cs"] or active_suit in ["as", "bs", "cs"]
-        
+
         is_made_skel = self.is_skelecog_var.get()
         is_zapped = getattr(self, 'is_zapped_var', None) and self.is_zapped_var.get()
 
@@ -2788,7 +2792,7 @@ class CogViewer(ShowBase):
             if not already_skel:
                 if "hands" in cog_data:
                     hands_np = self.actor.find('**/hands')
-                    if not hands_np.isEmpty(): 
+                    if not hands_np.isEmpty():
                         hands_np.setColor(cog_data["hands"])
 
                 medallion = cog_data.get("emblem", "emblem_corp")
@@ -2799,19 +2803,24 @@ class CogViewer(ShowBase):
                     chest_null.setH(0)
                     self.iconbase.setPosHprScale(*globals.COG_ICON_HPR)
 
-                    for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp', 'emblem_board']:
+                    for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp',
+                                'emblem_board']:
                         target = self.iconbase.find(f'**/{emb}')
-                        if not target.isEmpty(): 
+                        if not target.isEmpty():
                             target.hide()
 
                     target_med = self.iconbase.find(f'**/{medallion}')
-                    if not target_med.isEmpty(): 
+                    if not target_med.isEmpty():
                         target_med.show()
 
-                    if suit_type in ["a", "af", "cch", "mph", "hr"]: self.iconbase.setY(-0.10)
-                    elif suit_type in ["c"]: self.iconbase.setY(0.10)
+                    if suit_type in ["a", "af", "cch", "mph", "hr"]:
+                        self.iconbase.setY(-0.10)
+                    elif suit_type in ["c"]:
+                        self.iconbase.setY(0.10)
                     elif suit_type in ["cf"]:
-                        self.iconbase.setY(0.02); self.iconbase.setZ(0.23); self.iconbase.setP(2.5)
+                        self.iconbase.setY(0.02);
+                        self.iconbase.setZ(0.23);
+                        self.iconbase.setP(2.5)
                     elif suit_type in ["erfit"]:
                         self.iconbase.setPosHprScale(0.00, 0.04, 0.00, 180.00, 349.70, 0.00, 1.00, 1.00, 1.00)
                     else:
@@ -2921,10 +2930,10 @@ class CogViewer(ShowBase):
             self.control_panel.is_skelecog_var.set(False)
             if hasattr(self.control_panel, 'is_zapped_var'):
                 self.control_panel.is_zapped_var.set(False)
-            
+
             if hasattr(self.control_panel, 'selected_suit_mod_var'):
                 self.control_panel.selected_suit_mod_var.set("")
-                
+
             self.store_skelecog_skull = None
             self.store_skel_head_name = None
 
@@ -3166,11 +3175,11 @@ class CogViewer(ShowBase):
         is_exec = self.control_panel.is_executive_var.get()
         is_fired = self.control_panel.is_fired_var.get()
         is_waiter = self.control_panel.is_waiter_var.get()
-        
+
         is_toggled_skel = hasattr(self, 'control_panel') and self.control_panel.is_skelecog_var.get()
         already_skel = self.suit_type in ["as", "bs", "cs"]
         is_skelecog = is_toggled_skel or already_skel
-        
+
         not_erfit = self.suit_type != "erfit"
 
         if trigger == "fired" and is_fired:
@@ -3212,18 +3221,19 @@ class CogViewer(ShowBase):
         if not tex_list: return
 
         tex_index = 0
-        if is_fired: tex_index = -1
+        if is_fired:
+            tex_index = -1
         elif is_waiter and base_tex_key in ["c", "cs"] and len(tex_list) > 3:
             tex_index = 3 if is_exec else 2
         elif is_exec and len(tex_list) > 1:
             tex_index = 1
-        
+
         tex_to_apply = tex_list[tex_index]
 
         if tex_index == 0 and not already_skel:
             if "suitTex" in self.cog_data and not was_originally_skel:
                 tex_to_apply = self.cog_data["suitTex"]
-                
+
         tx_suit = loader.loadTexture(tex_to_apply)
 
         if not already_skel:
@@ -3239,9 +3249,12 @@ class CogViewer(ShowBase):
         skel_tex_key = dept + "s"
         skel_tex_list = paths.get(skel_tex_key)
         if skel_tex_list:
-            if is_waiter: skel_tex_path = f"{globals.RESOURCES_DIR}/phase_5/maps/ttcc_ene_skelecog_waiter.png"
-            elif is_fired: skel_tex_path = skel_tex_list[-1]
-            elif is_exec and len(skel_tex_list) > 1: skel_tex_path = skel_tex_list[1]
+            if is_waiter:
+                skel_tex_path = f"{globals.RESOURCES_DIR}/phase_5/maps/ttcc_ene_skelecog_waiter.png"
+            elif is_fired:
+                skel_tex_path = skel_tex_list[-1]
+            elif is_exec and len(skel_tex_list) > 1:
+                skel_tex_path = skel_tex_list[1]
             else:
                 if was_originally_skel and "suitTex" in self.cog_data:
                     skel_tex_path = self.cog_data["suitTex"]
@@ -3251,14 +3264,13 @@ class CogViewer(ShowBase):
             skel_tx_suit = loader.loadTexture(skel_tex_path)
             self.store_skelecog_texture = skel_tex_path
             self.store_skel_head_tex = skel_tx_suit
-            
+
             selected_mod = None
             if hasattr(self, 'control_panel') and self.control_panel.selected_suit_mod_var.get():
                 selected_mod = self.control_panel.selected_suit_mod_var.get()
-            
+
             is_override = selected_mod and selected_mod not in ["as", "bs", "cs"]
-            
-            
+
             skelecog_body_tex = tx_suit if is_override else skel_tx_suit
             zapped_body_tex = skel_tx_suit
 
@@ -3272,7 +3284,7 @@ class CogViewer(ShowBase):
                 if orig_suit in ["as", "bs", "cs"]:
                     if hasattr(self, 'head') and self.head:
                         self.head.setTexture(skel_tx_suit, 1)
-                
+
             if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog:
                 for part in ['body', 'necktie-s', 'necktie-w', 'bowtie']:
                     np = self.zapped_skelecog.find(f'**/{part}')
@@ -3294,15 +3306,17 @@ class CogViewer(ShowBase):
 
         if self.cog_data.get("suitToggle", "") in ["s"]:
             if hasattr(self, 'head') and self.head:
-                self.head.setTexture(tx_suit, 1) 
+                self.head.setTexture(tx_suit, 1)
                 self.store_head_texture = tex_to_apply
 
         elif cog_name in ["cc_a_ene_bagholder", "cc_a_ene_insider", "cc_a_ene_headhoncho"]:
             head_tex_list = globals.HEAD_TEXTURE_PATH.get(base_tex_key)
             if head_tex_list:
                 head_tex = head_tex_list[0]
-                if is_fired: head_tex = head_tex_list[-1]
-                elif is_exec: head_tex = head_tex_list[1]
+                if is_fired:
+                    head_tex = head_tex_list[-1]
+                elif is_exec:
+                    head_tex = head_tex_list[1]
                 self.head.setTexture(loader.loadTexture(head_tex), 1)
                 self.store_head_texture = head_tex
 
@@ -3573,7 +3587,7 @@ class CogViewer(ShowBase):
     def _swap_head_model(self, new_model_path):
         if not new_model_path:
             return None
-            
+
         vfs = VirtualFileSystem.getGlobalPtr()
         panda_path = Filename.fromOsSpecific(new_model_path)
         panda_path.makeTrueCase()
@@ -3581,10 +3595,10 @@ class CogViewer(ShowBase):
         if not (os.path.isfile(new_model_path) or vfs.exists(panda_path)):
             print(f"Warning: Could not find head model in OS or VFS: {new_model_path}")
             return None
-        
+
         new_head = None
         anim_dict = {}
-        
+
         if isinstance(self.head, Actor):
             if hasattr(self.head, "_anim_dict"):
                 anim_dict = self.head._anim_dict
@@ -3602,7 +3616,7 @@ class CogViewer(ShowBase):
                 new_head = loader.loadModel(panda_path)
         except Exception as e:
             new_head = loader.loadModel(panda_path)
-            
+
         if not new_head or new_head.isEmpty():
             print(f"Warning: Failed to load head model from {panda_path}")
             return None
@@ -3650,20 +3664,20 @@ class CogViewer(ShowBase):
 
             if cog_id == "majorplayer" and hasattr(self, 'control_panel'):
                 self.control_panel.suit_is_boogie.pack(anchor="w", padx=5, pady=2)
-            
+
             vfs = VirtualFileSystem.getGlobalPtr()
             panda_hw_path = Filename.fromOsSpecific(hw_head_model_path) if hw_head_model_path else Filename("")
 
             if hw_head_model_path and (os.path.isfile(hw_head_model_path) or vfs.exists(panda_hw_path)):
                 if check_stored:
                     self.set_stored_vals()
-                
+
                 new_head = self._swap_head_model(hw_head_model_path)
                 if new_head is not None:
                     if hasattr(self, 'head') and self.head is not None:
                         self.head.detachNode()
                     self.head = new_head
-                    
+
                 if check_stored:
                     self.update_cog_attributes(None, True)
 
@@ -3750,7 +3764,8 @@ class CogViewer(ShowBase):
                     tx_body_hw = loader.loadTexture(get_valid_texture_path(cog_data.get("bodyTex_HW")))
                     hw_head_tex = loader.loadTexture(get_valid_texture_path(cog_data.get("headTex_HW")))
 
-                    self.texture_part_check(['necktie-s', 'necktie-w', 'bowtie',  'highroller_body'], target_actor, tx_body_hw)
+                    self.texture_part_check(['necktie-s', 'necktie-w', 'bowtie', 'highroller_body'], target_actor,
+                                            tx_body_hw)
                     target_actor.find('**/body').setTexture(hw_suit_tex, 1)
 
                     self.head.setTexture(hw_head_tex, 1)
@@ -3762,7 +3777,8 @@ class CogViewer(ShowBase):
                     tx_body_normal = getattr(globals, "MP_BODY", get_valid_texture_path(cog_data.get("suitTex")))
                     if isinstance(tx_body_normal, str): tx_body_normal = loader.loadTexture(tx_body_normal)
 
-                    self.texture_part_check(['necktie-s', 'necktie-w', 'bowtie',  'highroller_body'], target_actor, tx_body_normal)
+                    self.texture_part_check(['necktie-s', 'necktie-w', 'bowtie', 'highroller_body'], target_actor,
+                                            tx_body_normal)
                     target_actor.find('**/body').setTexture(normal_suit_tex, 1)
 
                     self.head.clearTexture()
@@ -3838,13 +3854,13 @@ class CogViewer(ShowBase):
 
             if hw_head_model_path and (os.path.isfile(hw_head_model_path) or vfs.exists(panda_hw_path)):
                 self.set_stored_vals()
-                
+
                 new_head = self._swap_head_model(cog_data.get("head"))
                 if new_head is not None:
                     if hasattr(self, 'head') and self.head is not None:
                         self.head.detachNode()
                     self.head = new_head
-                    
+
                 self.update_cog_attributes(None, True)
 
             if "ttcc_ene_rainmaker" in cog_name:
@@ -3932,7 +3948,6 @@ class CogViewer(ShowBase):
         elif cog_id in ["majorplayer", "chainsawconsultant"]:
             self.darken_cog(False)
 
-
     def toggle_boogie(self, active, store_tex=True):
         if getattr(self, 'is_costume_active', False):
             cog_data = globals.COG_DATA.get(self.current_cog, None)
@@ -3952,7 +3967,8 @@ class CogViewer(ShowBase):
                 tx_body_hw = loader.loadTexture(get_valid_texture_path(cog_data.get("bodyTex_HW")))
                 hw_head_tex = loader.loadTexture(get_valid_texture_path(cog_data.get("headTex_HW")))
 
-                self.texture_part_check(['necktie-s', 'necktie-w', 'bowtie',  'highroller_body'], target_actor, tx_body_hw)
+                self.texture_part_check(['necktie-s', 'necktie-w', 'bowtie', 'highroller_body'], target_actor,
+                                        tx_body_hw)
                 target_actor.find('**/body').setTexture(hw_suit_tex, 1)
 
                 if hasattr(self, 'head') and self.head:
@@ -4075,24 +4091,30 @@ class CogViewer(ShowBase):
                     part_node.setColorScale(color)
         self.store_body_hex_color = hex_code
         self.store_body_color = True
-    
+
     def apply_skelecog_hand_color(self, target_actor):
         if not target_actor: return
         hands = target_actor.find('**/hands')
-        
+
         if not hands.isEmpty():
             is_exec = hasattr(self, 'control_panel') and self.control_panel.is_executive_var.get()
-            
+
             if not is_exec:
                 hands.setColor(126 / 255.0, 126 / 255.0, 125 / 255.0, 1.0)
             else:
                 dept = self.cog_data.get("dept", "s")
-                if dept == "s": hands.setColor(122 / 255.0, 90 / 255.0, 125 / 255.0, 1.0)
-                elif dept == "m": hands.setColor(85 / 255.0, 103 / 255.0, 82 / 255.0, 1.0)
-                elif dept == "l": hands.setColor(85 / 255.0, 103 / 255.0, 125 / 255.0, 1.0)
-                elif dept == "c": hands.setColor(133 / 255.0, 112 / 255.0, 86 / 255.0, 1.0)
-                elif dept == "g": hands.setColor(72 / 255.0, 94 / 255.0, 93 / 255.0, 1.0)
-                else: hands.setColor(126 / 255.0, 126 / 255.0, 125 / 255.0, 1.0)
+                if dept == "s":
+                    hands.setColor(122 / 255.0, 90 / 255.0, 125 / 255.0, 1.0)
+                elif dept == "m":
+                    hands.setColor(85 / 255.0, 103 / 255.0, 82 / 255.0, 1.0)
+                elif dept == "l":
+                    hands.setColor(85 / 255.0, 103 / 255.0, 125 / 255.0, 1.0)
+                elif dept == "c":
+                    hands.setColor(133 / 255.0, 112 / 255.0, 86 / 255.0, 1.0)
+                elif dept == "g":
+                    hands.setColor(72 / 255.0, 94 / 255.0, 93 / 255.0, 1.0)
+                else:
+                    hands.setColor(126 / 255.0, 126 / 255.0, 125 / 255.0, 1.0)
 
     def apply_head_color(self, hex_code):
         color = self.hex_to_p3d_color(hex_code)
@@ -4354,7 +4376,7 @@ class CogViewer(ShowBase):
     def toggle_skele_meter_color(self):
         cog_data = globals.COG_DATA[self.current_cog]
         self.skele_meter_color = globals.SKELECOG_METER_COLORS[self.skele_i]
-        
+
         already_skel = self.suit_type in ["as", "bs", "cs"]
         if already_skel:
             if hasattr(self, 'health_meter') and getattr(self, 'health_meter') and not self.health_meter.isEmpty():
@@ -4652,10 +4674,10 @@ class CogViewer(ShowBase):
         if self.actor:
             is_toggled_skel = hasattr(self, 'control_panel') and self.control_panel.is_skelecog_var.get()
             already_skel = self.suit_type in ["as", "bs", "cs"]
-            
+
             tex_str = str(texture_path).lower()
             is_skel_tex = "skelecog" in tex_str or "skel" in tex_str or "as_" in tex_str or "bs_" in tex_str or "cs_" in tex_str
-            
+
             if is_skel_tex or already_skel:
                 self.store_skelecog_texture = texture_path
                 self.store_skel_head_tex = loader.loadTexture(texture_path)
@@ -4663,15 +4685,16 @@ class CogViewer(ShowBase):
                 self.store_suit_texture = texture_path
 
             texture = loader.loadTexture(texture_path)
-            
+
             if not already_skel and not is_skel_tex:
                 if self.suit_type not in ["erfit", "boss"]:
-                    suit_nodes = [self.actor.find('**/body'), self.actor.find('**/necktie-s'), self.actor.find('**/necktie-w'), self.actor.find('**/bowtie')]
+                    suit_nodes = [self.actor.find('**/body'), self.actor.find('**/necktie-s'),
+                                  self.actor.find('**/necktie-w'), self.actor.find('**/bowtie')]
                 else:
                     suit_nodes = [self.actor.find('**/body')]
                 for node in suit_nodes:
                     if not node.isEmpty(): node.setTexture(texture, 1)
-                    
+
             elif already_skel:
                 for part in ['body', 'necktie-s', 'necktie-w', 'bowtie']:
                     np = self.actor.find(f'**/{part}')
@@ -4688,11 +4711,12 @@ class CogViewer(ShowBase):
                 if hasattr(self, 'control_panel') and self.control_panel.selected_suit_mod_var.get():
                     selected_mod = self.control_panel.selected_suit_mod_var.get()
                 is_override = selected_mod and selected_mod not in ["as", "bs", "cs"]
-                
+
                 if is_override:
                     overlay_tex = loader.loadTexture(self.store_suit_texture) if self.store_suit_texture else texture
                 else:
-                    overlay_tex = loader.loadTexture(self.store_skelecog_texture) if self.store_skelecog_texture else texture
+                    overlay_tex = loader.loadTexture(
+                        self.store_skelecog_texture) if self.store_skelecog_texture else texture
 
                 for skel_attr in ['zapped_skelecog', 'skelecog']:
                     skel_node = getattr(self, skel_attr, None)
@@ -4719,23 +4743,23 @@ class CogViewer(ShowBase):
 
     def apply_suit_model(self, suit_model_key):
         self.is_swapping_body = True
-        
+
         was_skel = False
         was_exec = False
         was_fired = False
         was_zapped = False
-        
+
         if hasattr(self, 'control_panel'):
             was_skel = self.control_panel.is_skelecog_var.get()
             was_exec = self.control_panel.is_executive_var.get()
             was_fired = self.control_panel.is_fired_var.get()
-            
+
             if was_skel: self.toggle_skelecog(False)
-            
+
             if getattr(self.control_panel, 'is_zapped_var', None) and self.control_panel.is_zapped_var.get():
                 self.toggle_zapped(False)
                 self.control_panel.is_zapped_var.set(False)
-                
+
             battle_vars = [
                 ('is_enraged_var', self.toggle_enrage_fire),
                 ('is_soaked_var', self.toggle_soaked),
@@ -4745,43 +4769,43 @@ class CogViewer(ShowBase):
                 ('is_chilled_var', self.toggle_chilled),
                 ('is_frozen_var', self.toggle_frozen)
             ]
-            
+
             for var_name, toggle_func in battle_vars:
                 if hasattr(self.control_panel, var_name):
                     var_obj = getattr(self.control_panel, var_name)
                     if var_obj.get():
                         toggle_func(False)
                         var_obj.set(False)
-                        
+
             self.clear_pie_splats()
-        
+
         if self.actor:
             self.set_stored_vals()
             self.build_cog(suit_model_key, False)
-            
+
             if hasattr(self, 'control_panel'):
                 if was_exec: self.control_panel.is_executive_var.set(True)
                 if was_fired: self.control_panel.is_fired_var.set(True)
                 if was_skel: self.control_panel.is_skelecog_var.set(True)
-            
+
             self.update_cog_attributes(suit_model_key)
 
             if hasattr(self, 'control_panel'):
                 self.set_suit_texture()
-                if was_exec: 
+                if was_exec:
                     self.set_suit_texture("exec")
-                elif was_fired: 
+                elif was_fired:
                     self.set_suit_texture("fired")
-                    
-                if was_skel: 
+
+                if was_skel:
                     self.toggle_skelecog(True)
-                
-                if was_zapped: 
+
+                if was_zapped:
                     self.toggle_zapped(True)
                     self.control_panel.is_zapped_var.set(True)
-                
+
                 self.control_panel.update_incompatibilities()
-                
+
         self.is_swapping_body = False
 
     def reset_stored_vals(self):
@@ -4905,7 +4929,7 @@ class CogViewer(ShowBase):
         is_natural_skel = self.suit_type in ["as", "bs", "cs"]
         orig_suit = self.cog_data.get("suit", "")
         was_originally_skel = orig_suit in ["as", "bs", "cs"]
-        
+
         if not is_natural_skel:
             if self.store_suit_texture:
                 self.apply_suit_texture(self.store_suit_texture)
@@ -4913,14 +4937,14 @@ class CogViewer(ShowBase):
                 cog_name = self.cog_data.get("name", "")
                 dept = self.cog_data.get("dept", "s")
                 paths = globals.SUIT_TEXTURE_PATH
-                
+
                 if "suitTex" in self.cog_data and not was_originally_skel:
                     self.apply_suit_texture(self.cog_data["suitTex"])
                 elif cog_name in paths and not was_originally_skel:
                     self.apply_suit_texture(paths[cog_name][0])
                 else:
                     self.apply_suit_texture(globals.DEPT_SUIT_TEX_MAP.get(dept))
-                    
+
         if is_toggled_skel or is_natural_skel:
             if self.store_skelecog_texture:
                 self.apply_suit_texture(self.store_skelecog_texture)
@@ -4928,7 +4952,7 @@ class CogViewer(ShowBase):
                 dept = self.cog_data.get("dept", "s")
                 skel_tex_key = dept + "s"
                 paths = globals.SUIT_TEXTURE_PATH
-                
+
                 if was_originally_skel and "suitTex" in self.cog_data:
                     self.apply_suit_texture(self.cog_data["suitTex"])
                 elif skel_tex_key in paths:
@@ -4962,7 +4986,7 @@ class CogViewer(ShowBase):
 
         if self.store_head_anim is not None:
             active_head = self.get_active_head()
-            
+
             if active_head and hasattr(active_head, 'pose'):
                 self.set_head_animation(self.store_head_anim)
                 self.control_panel.loop_head_var.set(self.store_head_loop)
@@ -5074,7 +5098,7 @@ class CogViewer(ShowBase):
         if self.actor:
             self.store_emblem = emblem_name
             emblem_map = globals.EMBLEM_MAP
-            
+
             targets = []
             if hasattr(self, 'iconbase') and self.iconbase: targets.append(self.iconbase)
             if hasattr(self, 'skel_iconbase') and self.skel_iconbase: targets.append(self.skel_iconbase)
@@ -5085,7 +5109,7 @@ class CogViewer(ShowBase):
                 for emblem in list(emblem_map)[:-2]:
                     current_emblem = globals.EMBLEM_MAP.get(emblem)
                     target.find(f'**/{current_emblem}').hide()
-                
+
                 if emblem_name not in ["light", "none"]:
                     target.find('**/emblem_hp').hide()
                     target.find('**/glow').hide()
@@ -5097,7 +5121,7 @@ class CogViewer(ShowBase):
                     target.find('**/emblem_hp').hide()
                     target.find('**/glow').hide()
                     target.hide()
-                    
+
             if emblem_name == "none":
                 if self.actor.find('**/emblem_healthmeter'):
                     self.actor.find('**/emblem_healthmeter').hide()
@@ -5171,9 +5195,9 @@ class CogViewer(ShowBase):
             return task.done
 
         total_frames = self.actor.getNumFrames(self.current_animation)
-        
+
         active_head = self.get_active_head()
-        
+
         has_head_anim = False
         total_head_frames = 0
         if active_head and isinstance(active_head, Actor) and self.current_head_animation != "zero":
@@ -5190,14 +5214,16 @@ class CogViewer(ShowBase):
             if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.stop()
             if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor: self.prop_item1_actor.stop()
             if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor: self.prop_item2_actor.stop()
-            
+
             if has_head_anim and hasattr(active_head, 'stop'):
                 active_head.stop()
 
             self.actor.pose(self.current_animation, self.frame_index)
             if hasattr(self, 'skelecog') and self.skelecog: self.skelecog.pose(self.current_animation, self.frame_index)
-            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.pose(self.current_animation, self.frame_index)
-            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.pose(
+                self.current_animation, self.frame_index)
+            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.pose(self.current_animation,
+                                                                                              self.frame_index)
 
             if hasattr(self, 'boss_parts') and self.boss_parts:
                 for part_name, part_actor in self.boss_parts.items():
@@ -5208,7 +5234,7 @@ class CogViewer(ShowBase):
             if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor and self.prop_item1_actor.getCurrentAnim():
                 p1_anim = self.prop_item1_actor.getCurrentAnim()
                 self.prop_item1_actor.pose(p1_anim, self.frame_index % self.prop_item1_actor.getNumFrames(p1_anim))
-                
+
             if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor and self.prop_item2_actor.getCurrentAnim():
                 p2_anim = self.prop_item2_actor.getCurrentAnim()
                 self.prop_item2_actor.pose(p2_anim, self.frame_index % self.prop_item2_actor.getNumFrames(p2_anim))
@@ -5222,16 +5248,17 @@ class CogViewer(ShowBase):
             self.graphicsEngine.renderFrame()
             screenshot_name = os.path.join(self.frame_folder_path, f"{self.frame_index:03d}.png")
             self.screenshot(screenshot_name, False)
-            
+
             self.frame_index += 1
             return task.cont
         else:
-            print(f"finished taking {total_frames} screenshots! im pacesetter hey they are saved in {self.frame_folder_path}")
+            print(
+                f"finished taking {total_frames} screenshots! im pacesetter hey they are saved in {self.frame_folder_path}")
             if self.bool:
                 self.setBackgroundColor(0, 0, 0)
             else:
                 self.setBackgroundColor(self.background_color)
-                
+
             self.play_body_animation()
             if has_head_anim:
                 self.play_head_animation()
@@ -5246,8 +5273,9 @@ class CogViewer(ShowBase):
         cog_data = globals.COG_DATA[self.current_cog]
         current_anim = getattr(self, 'current_animation', 'anim')
         date_string = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
-        self.temp_frame_path = os.path.join(globals.SCREENSHOT_DIR, f"temp_{cog_data['cog']}_{current_anim}_{date_string}")
-        
+        self.temp_frame_path = os.path.join(globals.SCREENSHOT_DIR,
+                                            f"temp_{cog_data['cog']}_{current_anim}_{date_string}")
+
         if not os.path.exists(self.temp_frame_path):
             os.makedirs(self.temp_frame_path)
 
@@ -5265,7 +5293,7 @@ class CogViewer(ShowBase):
                 self.control_panel.is_shadow_var.set(False)
                 if hasattr(self, 'toggle_shadow'):
                     self.toggle_shadow()
-            
+
         self.taskMgr.add(self.update_frame_gif, "UpdateFrameGifTask")
 
     def update_frame_gif(self, task):
@@ -5278,9 +5306,9 @@ class CogViewer(ShowBase):
             return task.done
 
         total_frames = self.actor.getNumFrames(self.current_animation)
-        
+
         active_head = self.get_active_head()
-        
+
         has_head_anim = False
         total_head_frames = 0
         if active_head and isinstance(active_head, Actor) and self.current_head_animation != "zero":
@@ -5303,8 +5331,10 @@ class CogViewer(ShowBase):
 
             self.actor.pose(self.current_animation, self.frame_index)
             if hasattr(self, 'skelecog') and self.skelecog: self.skelecog.pose(self.current_animation, self.frame_index)
-            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.pose(self.current_animation, self.frame_index)
-            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.pose(self.current_animation, self.frame_index)
+            if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog: self.zapped_skelecog.pose(
+                self.current_animation, self.frame_index)
+            if hasattr(self, 'hw_body_actor') and self.hw_body_actor: self.hw_body_actor.pose(self.current_animation,
+                                                                                              self.frame_index)
 
             if hasattr(self, 'boss_parts') and self.boss_parts:
                 for part_name, part_actor in self.boss_parts.items():
@@ -5315,7 +5345,7 @@ class CogViewer(ShowBase):
             if hasattr(self, 'prop_item1_actor') and self.prop_item1_actor and self.prop_item1_actor.getCurrentAnim():
                 p1_anim = self.prop_item1_actor.getCurrentAnim()
                 self.prop_item1_actor.pose(p1_anim, self.frame_index % self.prop_item1_actor.getNumFrames(p1_anim))
-                
+
             if hasattr(self, 'prop_item2_actor') and self.prop_item2_actor and self.prop_item2_actor.getCurrentAnim():
                 p2_anim = self.prop_item2_actor.getCurrentAnim()
                 self.prop_item2_actor.pose(p2_anim, self.frame_index % self.prop_item2_actor.getNumFrames(p2_anim))
@@ -5329,7 +5359,7 @@ class CogViewer(ShowBase):
             self.graphicsEngine.renderFrame()
             screenshot_name = os.path.join(self.temp_frame_path, f"{self.frame_index:03d}.png")
             self.screenshot(screenshot_name, False)
-            
+
             self.frame_index += 1
             return task.cont
         else:
@@ -5341,18 +5371,18 @@ class CogViewer(ShowBase):
             gif_filename = os.path.join(globals.SCREENSHOT_DIR, filename)
 
             self.compile_gif_and_cleanup(self.temp_frame_path, gif_filename, fps=24)
-            
+
             if self.bool:
                 self.setBackgroundColor(0, 0, 0)
             else:
                 self.setBackgroundColor(self.background_color)
-                
+
             if getattr(self, 'restore_shadow', False):
                 if hasattr(self, 'control_panel') and getattr(self.control_panel, 'is_shadow_var', None):
                     self.control_panel.is_shadow_var.set(True)
                     if hasattr(self, 'toggle_shadow'):
                         self.toggle_shadow()
-                
+
             self.play_body_animation()
             if has_head_anim:
                 self.play_head_animation()
@@ -5380,7 +5410,7 @@ class CogViewer(ShowBase):
         current_anim = getattr(self, 'current_animation', 'anim')
         date_string = datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
         self.frame_folder_path = os.path.join(globals.SCREENSHOT_DIR, f"{cog_data['cog']}_{current_anim}_{date_string}")
-        
+
         if not os.path.exists(self.frame_folder_path):
             os.makedirs(self.frame_folder_path)
 
@@ -5390,7 +5420,7 @@ class CogViewer(ShowBase):
             self.stop_head_animation()
 
         self.setBackgroundColor(0, 0, 0)
-            
+
         self.taskMgr.add(self.update_frame, "UpdateFrameTask")
 
     def update_body_pose(self, frame_value):
@@ -5743,7 +5773,7 @@ class CogViewer(ShowBase):
                     return self.skelecog_skull
         return self.head if hasattr(self, 'head') else None
 
-    def darken_cog(self, active=True): # for zap
+    def darken_cog(self, active=True):  # for zap
         is_made_skelecog = hasattr(self, 'control_panel') and self.control_panel.is_skelecog_var.get()
         # darken Cog
         if active:
@@ -5831,7 +5861,8 @@ class CogViewer(ShowBase):
                 self.zapped_head.removeNode()
                 self.zapped_head = None
 
-            self.switch_toggle(self.control_panel.is_zapped_var, self.control_panel.is_skelecog_var, self.toggle_skelecog)
+            self.switch_toggle(self.control_panel.is_zapped_var, self.control_panel.is_skelecog_var,
+                               self.toggle_skelecog)
             self.is_zapped = True
 
             if self.suit_type in ["bossCog", "boss"]: return
@@ -5871,10 +5902,14 @@ class CogViewer(ShowBase):
             ]
 
             body_path = globals.SUIT_MODEL_DICT.get(skel_suit)
-            if skel_suit == "as": anims = globals.SUIT_A_ANIMATION_DICT
-            elif skel_suit == "bs": anims = globals.SUIT_B_ANIMATION_DICT
-            elif skel_suit == "cs": anims = globals.SUIT_C_ANIMATION_DICT
-            else: anims = {}
+            if skel_suit == "as":
+                anims = globals.SUIT_A_ANIMATION_DICT
+            elif skel_suit == "bs":
+                anims = globals.SUIT_B_ANIMATION_DICT
+            elif skel_suit == "cs":
+                anims = globals.SUIT_C_ANIMATION_DICT
+            else:
+                anims = {}
 
             self.zapped_skelecog = Actor(body_path, anims)
             self.zapped_skelecog.reparentTo(self.actor)
@@ -5889,7 +5924,7 @@ class CogViewer(ShowBase):
                 skel_tex_key = dept + "s"
                 skel_tex_list = globals.SUIT_TEXTURE_PATH.get(skel_tex_key)
                 if skel_tex_list:
-                    if (is_exec or manager_list) and len(skel_tex_list) > 1: 
+                    if (is_exec or manager_list) and len(skel_tex_list) > 1:
                         tex_path = skel_tex_list[1]
                     else:
                         orig_suit = self.cog_data.get("suit", "")
@@ -5951,7 +5986,7 @@ class CogViewer(ShowBase):
             if hasattr(self, 'control_panel'):
                 self.control_panel.update_animation_lists(self.available_animations, self.available_head_animations)
                 self.control_panel.update_anim_slider_range("head", 0)
-                
+
             if self.current_head_animation in skel_head_anims and isinstance(self.zapped_head, Actor):
                 self.zapped_head.loop(self.current_head_animation)
             else:
@@ -5969,22 +6004,29 @@ class CogViewer(ShowBase):
                     self.zap_iconbase.reparentTo(zap_chest)
                     self.zap_iconbase.setPosHprScale(*globals.COG_ICON_HPR)
                     zap_chest.setH(0)
-                    
-                    for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp', 'emblem_board']:
+
+                    for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp',
+                                'emblem_board']:
                         self.zap_iconbase.findAllMatches(f'**/{emb}').hide()
-                        
+
                     if getattr(self, 'store_emblem', None) and self.store_emblem not in ["light", "none"]:
                         self.zap_iconbase.findAllMatches(f'**/{self.store_emblem}').show()
                     elif getattr(self, 'store_emblem', None) == "light":
                         hp = self.zap_iconbase.findAllMatches('**/emblem_hp')
                         glow = self.zap_iconbase.findAllMatches('**/glow')
-                        hp.show(); hp.setColor(self.skele_meter_color)
-                        glow.show(); glow.setColor(self.skele_meter_color)
-                        
-                    if skel_suit in ["a", "af", "cch", "mph", "hr"]: self.zap_iconbase.setY(-0.10)
-                    elif skel_suit in ["c"]: self.zap_iconbase.setY(0.10)
+                        hp.show();
+                        hp.setColor(self.skele_meter_color)
+                        glow.show();
+                        glow.setColor(self.skele_meter_color)
+
+                    if skel_suit in ["a", "af", "cch", "mph", "hr"]:
+                        self.zap_iconbase.setY(-0.10)
+                    elif skel_suit in ["c"]:
+                        self.zap_iconbase.setY(0.10)
                     elif skel_suit in ["cf"]:
-                        self.zap_iconbase.setY(0.02); self.zap_iconbase.setZ(0.23); self.zap_iconbase.setP(2.5)
+                        self.zap_iconbase.setY(0.02);
+                        self.zap_iconbase.setZ(0.23);
+                        self.zap_iconbase.setP(2.5)
 
             self.zapped_skelecog.find('**/glow').hide()
 
@@ -6014,7 +6056,7 @@ class CogViewer(ShowBase):
 
         else:
             self.is_zapped = False
-            
+
             if hasattr(self, 'zapped_skelecog') and self.zapped_skelecog:
                 self.zapped_skelecog.cleanup()
                 self.zapped_skelecog.removeNode()
@@ -6106,7 +6148,7 @@ class CogViewer(ShowBase):
     def toggle_skelecog(self, active, stored_suit_path=None):
         if active:
             self.store_is_skelecog = True
-            
+
             if hasattr(self, 'skelecog') and self.skelecog:
                 self.skelecog.cleanup()
                 self.skelecog.removeNode()
@@ -6116,7 +6158,8 @@ class CogViewer(ShowBase):
                 self.skelecog_skull.removeNode()
                 self.skelecog_skull = None
 
-            self.switch_toggle(self.control_panel.is_skelecog_var, self.control_panel.is_costume_var, self.toggle_costume)
+            self.switch_toggle(self.control_panel.is_skelecog_var, self.control_panel.is_costume_var,
+                               self.toggle_costume)
             self.switch_toggle(self.control_panel.is_skelecog_var, self.control_panel.is_zapped_var, self.toggle_zapped)
             self.toggle_zapped(False)
 
@@ -6184,10 +6227,14 @@ class CogViewer(ShowBase):
 
             body_path = globals.SUIT_MODEL_DICT.get(skel_suit)
 
-            if skel_suit in globals.SUIT_A_MODEL_KEYS: anims = globals.SUIT_A_ANIMATION_DICT
-            elif skel_suit in globals.SUIT_B_MODEL_KEYS: anims = globals.SUIT_B_ANIMATION_DICT
-            elif skel_suit in globals.SUIT_C_MODEL_KEYS: anims = globals.SUIT_C_ANIMATION_DICT
-            else: anims = {}
+            if skel_suit in globals.SUIT_A_MODEL_KEYS:
+                anims = globals.SUIT_A_ANIMATION_DICT
+            elif skel_suit in globals.SUIT_B_MODEL_KEYS:
+                anims = globals.SUIT_B_ANIMATION_DICT
+            elif skel_suit in globals.SUIT_C_MODEL_KEYS:
+                anims = globals.SUIT_C_ANIMATION_DICT
+            else:
+                anims = {}
 
             self.skelecog = Actor(body_path, anims)
             self.skelecog.reparentTo(self.actor)
@@ -6203,9 +6250,11 @@ class CogViewer(ShowBase):
                 skel_tex_key = dept + "s"
                 skel_tex_list = globals.SUIT_TEXTURE_PATH.get(skel_tex_key)
                 if skel_tex_list:
-                    if is_fired: tex_path = skel_tex_list[-1]
-                    elif (is_exec or manager_list) and len(skel_tex_list) > 1: tex_path = skel_tex_list[1]
-                    else: 
+                    if is_fired:
+                        tex_path = skel_tex_list[-1]
+                    elif (is_exec or manager_list) and len(skel_tex_list) > 1:
+                        tex_path = skel_tex_list[1]
+                    else:
                         orig_suit = self.cog_data.get("suit", "")
                         if orig_suit in ["as", "bs", "cs"] and "suitTex" in self.cog_data:
                             tex_path = self.cog_data["suitTex"]
@@ -6276,22 +6325,29 @@ class CogViewer(ShowBase):
                     self.skel_iconbase.reparentTo(zap_chest)
                     self.skel_iconbase.setPosHprScale(*globals.COG_ICON_HPR)
                     zap_chest.setH(0)
-                    
-                    for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp', 'emblem_board']:
+
+                    for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp',
+                                'emblem_board']:
                         self.skel_iconbase.findAllMatches(f'**/{emb}').hide()
-                        
+
                     if getattr(self, 'store_emblem', None) and self.store_emblem not in ["light", "none"]:
                         self.skel_iconbase.findAllMatches(f'**/{self.store_emblem}').show()
                     elif getattr(self, 'store_emblem', None) == "light":
                         hp = self.skel_iconbase.findAllMatches('**/emblem_hp')
                         glow = self.skel_iconbase.findAllMatches('**/glow')
-                        hp.show(); hp.setColor(self.skele_meter_color)
-                        glow.show(); glow.setColor(self.skele_meter_color)
-                        
-                    if skel_suit in ["a", "af", "cch", "mph", "hr"]: self.skel_iconbase.setY(-0.10)
-                    elif skel_suit in ["c"]: self.skel_iconbase.setY(0.10)
+                        hp.show();
+                        hp.setColor(self.skele_meter_color)
+                        glow.show();
+                        glow.setColor(self.skele_meter_color)
+
+                    if skel_suit in ["a", "af", "cch", "mph", "hr"]:
+                        self.skel_iconbase.setY(-0.10)
+                    elif skel_suit in ["c"]:
+                        self.skel_iconbase.setY(0.10)
                     elif skel_suit in ["cf"]:
-                        self.skel_iconbase.setY(0.02); self.skel_iconbase.setZ(0.23); self.skel_iconbase.setP(2.5)
+                        self.skel_iconbase.setY(0.02);
+                        self.skel_iconbase.setZ(0.23);
+                        self.skel_iconbase.setP(2.5)
                     elif skel_suit in ["erfit"]:
                         self.skel_iconbase.setPosHprScale(0.00, 0.04, 0.00, 180.00, 349.70, 0.00, 1.00, 1.00, 1.00)
 
@@ -6870,7 +6926,8 @@ class CogViewer(ShowBase):
                     boss_parents[name] = part.getParent()
                     part.reparentTo(stash_node)
 
-        cogs = [c for c in self.cog_list if globals.COG_DATA[c].get("cog_type") != "boss" and "legacy" not in globals.COG_DATA[c].get("suit", "")]
+        cogs = [c for c in self.cog_list if
+                globals.COG_DATA[c].get("cog_type") != "boss" and "legacy" not in globals.COG_DATA[c].get("suit", "")]
         random_cog = random.choice(cogs)
         cog_data = globals.COG_DATA[random_cog]
         original_suit_type = cog_data["suit"]
@@ -6888,20 +6945,28 @@ class CogViewer(ShowBase):
         is_exec = (random.random() < exec_chance) if can_exec else False
 
         if is_skel:
-            if original_suit_type in ["a", "af", "hr", "mph", "cch", "erfit"]: suit_type = "as"
-            elif original_suit_type in ["b", "bf", "bc", "ps", "rm"]: suit_type = "bs"
-            elif original_suit_type in ["c", "cf"]: suit_type = "cs"
-            else: suit_type = original_suit_type
+            if original_suit_type in ["a", "af", "hr", "mph", "cch", "erfit"]:
+                suit_type = "as"
+            elif original_suit_type in ["b", "bf", "bc", "ps", "rm"]:
+                suit_type = "bs"
+            elif original_suit_type in ["c", "cf"]:
+                suit_type = "cs"
+            else:
+                suit_type = original_suit_type
         else:
             suit_type = original_suit_type
 
         temp_root = self.render.attachNewNode("temp_random_cog")
 
         body_path = globals.SUIT_MODEL_DICT.get(suit_type)
-        if suit_type in ["a", "af", "hr", "as", "mph", "cch", "erfit"]: anims = globals.SUIT_A_ANIMATION_DICT
-        elif suit_type in ["b", "bf", "bc", "ps", "rm", "bs"]: anims = globals.SUIT_B_ANIMATION_DICT
-        elif suit_type in ["c", "cf", "cs"]: anims = globals.SUIT_C_ANIMATION_DICT
-        else: anims = {}
+        if suit_type in ["a", "af", "hr", "as", "mph", "cch", "erfit"]:
+            anims = globals.SUIT_A_ANIMATION_DICT
+        elif suit_type in ["b", "bf", "bc", "ps", "rm", "bs"]:
+            anims = globals.SUIT_B_ANIMATION_DICT
+        elif suit_type in ["c", "cf", "cs"]:
+            anims = globals.SUIT_C_ANIMATION_DICT
+        else:
+            anims = {}
 
         temp_actor = Actor(body_path, anims)
         temp_actor.reparentTo(temp_root)
@@ -6962,8 +7027,6 @@ class CogViewer(ShowBase):
             hands = temp_actor.find('**/hands')
             if not hands.isEmpty():
                 hands.setTexture(tx_suit, 1)
-        
-        
 
         chest_null = temp_actor.find("**/joint_attachMeter")
 
@@ -6980,17 +7043,22 @@ class CogViewer(ShowBase):
             chest_null.setH(0)
             iconbase.setPosHprScale(*globals.COG_ICON_HPR)
 
-            for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp', 'emblem_board']:
+            for emb in ['emblem_hp', 'glow', 'emblem_sales', 'emblem_money', 'emblem_legal', 'emblem_corp',
+                        'emblem_board']:
                 target = iconbase.find(f'**/{emb}')
                 if not target.isEmpty(): target.hide()
 
             target_emblem = iconbase.find(f'**/{cog_data["emblem"]}')
             if not target_emblem.isEmpty(): target_emblem.show()
 
-            if original_suit_type in ["a", "af", "cch", "mph", "hr"]: iconbase.setY(-0.10)
-            elif original_suit_type in ["c"]: iconbase.setY(0.10)
+            if original_suit_type in ["a", "af", "cch", "mph", "hr"]:
+                iconbase.setY(-0.10)
+            elif original_suit_type in ["c"]:
+                iconbase.setY(0.10)
             elif original_suit_type in ["cf"]:
-                iconbase.setY(0.02); iconbase.setZ(0.23); iconbase.setP(2.5)
+                iconbase.setY(0.02);
+                iconbase.setZ(0.23);
+                iconbase.setP(2.5)
             elif original_suit_type in ["erfit"]:
                 iconbase.setPosHprScale(0.00, 0.04, 0.00, 180.00, 349.70, 0.00, 1.00, 1.00, 1.00)
             else:
@@ -7002,9 +7070,12 @@ class CogViewer(ShowBase):
         head_anims = []
         if is_skel:
             skel_head_name = ""
-            if suit_type == "as": skel_head_model = globals.SUIT_A_SKELECOG_HEAD; skel_head_name = "suitA_skeleton_skull"
-            elif suit_type == "bs": skel_head_model = globals.SUIT_B_SKELECOG_HEAD; skel_head_name = "suitB_skeleton_skull"
-            elif suit_type == "cs": skel_head_model = globals.SUIT_C_SKELECOG_HEAD; skel_head_name = "suitC_skeleton_skull"
+            if suit_type == "as":
+                skel_head_model = globals.SUIT_A_SKELECOG_HEAD; skel_head_name = "suitA_skeleton_skull"
+            elif suit_type == "bs":
+                skel_head_model = globals.SUIT_B_SKELECOG_HEAD; skel_head_name = "suitB_skeleton_skull"
+            elif suit_type == "cs":
+                skel_head_model = globals.SUIT_C_SKELECOG_HEAD; skel_head_name = "suitC_skeleton_skull"
 
             if cog_id == "derrickhand":
                 skel_head_model = f"{globals.RESOURCES_DIR}/phase_12/models/char/suits/ttcc_ene_derrickhand_skele-zero.bam"
@@ -7027,15 +7098,16 @@ class CogViewer(ShowBase):
             else:
                 temp_head = loader.loadModel(skel_head_model)
 
-
             if cog_id not in ["derrickhand", "clubpresident", "chainsawconsultant"]:
                 temp_head.setTexture(tx_suit, 1)
 
             if cog_id == "chainsawconsultant":
                 if is_exec:
-                    cc_head_tex = loader.loadTexture(os.path.join(globals.RESOURCES_DIR, "phase_12", "maps", "ttcc_ene_chainsaw_b.png"))
+                    cc_head_tex = loader.loadTexture(
+                        os.path.join(globals.RESOURCES_DIR, "phase_12", "maps", "ttcc_ene_chainsaw_b.png"))
                 else:
-                    cc_head_tex = loader.loadTexture(os.path.join(globals.RESOURCES_DIR, "phase_12", "maps", "ttcc_ene_chainsaw.png"))
+                    cc_head_tex = loader.loadTexture(
+                        os.path.join(globals.RESOURCES_DIR, "phase_12", "maps", "ttcc_ene_chainsaw.png"))
                 temp_head.setTexture(cc_head_tex, 1)
                 for part in ["Hat", "bulbRight", "bulbLeft", "bulbLeft-filament", "bulbRight-filament"]:
                     np = temp_head.find(f'**/{part}')
@@ -7072,11 +7144,11 @@ class CogViewer(ShowBase):
                 temp_head.setP(cog_data["headPosP"])
             if "headPosH" in cog_data:
                 temp_head.setH(cog_data["headPosH"])
-        
+
         if "belt" in cog_data:
             belt = loader.loadModel(cog_data["belt"])
             belt.reparentTo(temp_head)
-        
+
         if (not temp_head.find('**/brain').isEmpty()):
             temp_head.find('**/brain').setScale(0.95)
 
