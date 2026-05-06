@@ -20,6 +20,8 @@ Hi! This tool is mainly used for viewing Corporate Clash Cogs as well as making 
 * Added a Random Cog button (this button will randomly pick a Cog, randomly pick an animation, a head animation (if applicable) and screenshots it.)
 * Fixed Skelecogs and Zapped Skelecogs not moving when Make GIF is pressed.
 * probably introduced a ton of bugs too
+* (May 5th) Merged main toggle and suit toggle checkboxes into one container
+* (May 5th) Fixed an issue where Random Render Button and Make GIF button were clipping into the unique manager toggle container (e.g. Duck Shuffler, Chainsaw Consultant, etc.)
   
 ## How to Download Updates
 * Simply download both the updated main.py and updated globals.py found in the src folder and replace the old main.py and old globals.py found in your Cog Viewer src folder.
@@ -37,14 +39,16 @@ Hi! This tool is mainly used for viewing Corporate Clash Cogs as well as making 
 ## Sections:
 Section             | Location | Definition
 -------------   | ------------- | -------------
-Cog | Top Left (First Tab) | Allows you to select a Cog actor, organized by Department.
-Props | Top Left (Second Tab) | Allows you to apply props to the Cog actor.
-Main | Bottom Left (First Tab) | Allows you to toggle miscellaneous attributes of the Cog Actor and camera.
-Animation | Bottom Left (Second Tab) | Allows you to adjust the animation frames and playback.
-Suit Library | Bottom Left (Third Tab) | Allows you to apply and adjust different suit textures/models/model parts.
-Head HPR | Bottom Left (Fourth Tab) | Allows you to set the position and size of the Cog's head.
-Set Scale | Bottom Left (Fifth Tab) | Allows you to set the scale and dimensions of the Cog actor/head.
-Set Color | Bottom Left (Sixth Tab) | Allows you to apply colors to the Cog actor/background.
+Cog | Top Half (First Tab) | Allows you to select a Cog actor, organized by Department.
+Props | Top Half (Second Tab) | Allows you to apply props to the Cog actor.
+Environment | Top Half (Third Tab) | Allows you to set an environment for the render.
+Main | Bottom Half (First Tab) | Allows you to toggle miscellaneous attributes of the Cog Actor and camera.
+Animation | Bottom Half (Second Tab) | Allows you to adjust the animation frames and playback.
+Suit Library | Bottom Half (Third Tab) | Allows you to apply and adjust different suit textures/models/model parts.
+Head HPR | Bottom Half (Fourth Tab) | Allows you to set the position and size of the Cog's head.
+Set Scale | Bottom Half (Fifth Tab) | Allows you to set the scale and dimensions of the Cog actor/head.
+Set Color | Bottom Half (Sixth Tab) | Allows you to apply colors to the Cog actor/background.
+Battle Effects | Bottom Half (Seventh Tab) | Allows you to enable battle effects (e.g. soaked, stunned) on the Cog actor.
 
 ## Button Definitions:
 ### Cog List
@@ -61,30 +65,39 @@ Prop 1 | Props for the Cog's right hand. Double click a prop to load it in, doub
 Prop 2 | Props for the Cog's left hand. Double click a prop to load it in, double click to remove it. Use the search bar if you're looking for a specific prop.
 
 ### Toggles (Main)
-Button             | Action
+Checkbox             | Action
 -------------   | -------------
 Autoplay Animations | Makes animations play automatically when selected
 Toggle Shadow | Toggles the Cog's shadow.
 Toggle Body | Toggles the Cog's body. Useful for Cog head renders.
-Toggle Virtualize | Virtualizes the Cog, clicking the button multiple times will cycle through the different Virtualized colors, until getting turned off.
-Cycle Health Meter | Cycles through the hp value meters of a Cog.
-Reset Camera | Resets the camera to default values.
-Reset Camera Roll | Reset's the camera's roll.
-Upload Accessory | Prompts you to upload a bam file when pressed.
-Upload Suit Texture | Prompts you to upload a png file. Applied to the Cog's suit model.
-Upload Head Texture | Prompts you to upload a png file. Applied to the Cog's head model.
-Take Screenshot | Takes a screenshot and saves it in the screenshots folder.
-Render Frames | Renders all the frames in a Cog's body animation, each frame is saved in the screenshots folder.
-Add Pie Splat | Adds a pie splatter to the Cog, selected randomly. Can be used up to 3 times on a single Cog.
-Clear Pie Splats | Removes all the pie splatters from the Cog.
-Toggle Costume (Managers Only) | Toggles a Manager's halloween costume (if they have one).
-
-### Suit Toggles (Main)
-Button             | Action
--------------   | -------------
 Make Executive | Turns the Cog into an Executive.
 Make Fired | Turns the Cog into a fired Cog.
 Make Waiter (Bossbots Only) | Turns the Cog into a waiter.
+Make Skelecog | Turns the Cog into a Skelecog.
+Toggle Costume (Managers Only) | Toggles a Manager's halloween costume (if they have one).
+Boogie (Major Player Only) | Toggle's Major Player's phase 2 halloween costume (if toggle costume is enabled).
+
+### Buttons (Main)
+Button             | Action
+-------------   | -------------
+Toggle Virtualize | Virtualizes the Cog, clicking the button multiple times will cycle through the different Virtualized colors, until getting turned off.
+Upload Accessory | Prompts you to upload a bam file when pressed. Adds the model to the render, attached to the actor's head.
+Upload Suit Texture | Prompts you to upload a png file. Applied to the Cog's suit model.
+Upload Head Texture | Prompts you to upload a png file. Applied to the Cog's head model.
+Upload Head Part Texture | Only used for Rainmaker and Firestarter. Prompts you to upload a png file. Applied to the Rainmaker's hair/Firestarter's fire.
+Random Render Button | Creates a screenshot of a random cog in a random pose and saves it in the screenshots folder.
+Cycle Health Meter | Cycles through the hp value meters of a Cog.
+Reset Camera | Resets the camera to default values.
+Reset Camera Roll | Reset's the camera's roll.
+Take Screenshot | Takes a screenshot and saves it in the screenshots folder.
+Render Frames | Renders all the frames in a Cog's body animation, each frame is saved in the screenshots folder.
+Make GIF | Creates a GIF file of the Cog's animation and stores it in the screenshots folder.
+
+### Sliders (Main)
+Slider             | Action
+-------------   | -------------
+FOV | Controls the camera's field of view.
+Rotation | Controls the rotation of the Cog actor.
 
 ### Animation
 Button             | Action
@@ -134,6 +147,20 @@ Reset Cog Colors | Removes all Color changes applied to the Cog.
 Set Background Color | Changes the color of the background.
 Reset Background Color | Resets the color of the background to default.
 
+### Battle Effects
+Button             | Action
+-------------   | -------------
+Add Pie Splat | Adds a pie splatter to the Cog, selected randomly. Can be used up to 3 times on a single Cog.
+Clear Pie Splats | Removes all the pie splatters from the Cog.
+Enraged Fire | Toggles Scapegoat's enraged fire effect.
+Soaked | Toggles Squirt's soaked effect.
+Sued | Toggles cease & desist's sued effect.
+Zapped | Toggles Zap's "x-ray" effect.
+Insured | Toggles Case Manager's insured effect.
+Chilled | Toggles Squirt's frozen effect from the Plutocrat instance.
+Frozen | Toggles frozen's icecube shatter effect from the Plutocrat instance.
+Stun/Sued Height Offset | Controls the position of the stun/sued effect on the Z-axis.
+
 ### Prop 1 HPR / Prop 2 HPR
 Button             | Action
 -------------   | -------------
@@ -172,6 +199,9 @@ Control+Z	    | Optional keybind to reset the camera.
 ### Known Bugs
 * Toggle virtualize can cause transparency issues. Examples include VP/Multislacker's lightbulb, Cog Boss HP lights, CLO's body shadow, and CEO's eyes.
 * When switching from a Manager with unique toggles (e.g. toggle costume, suit toggles) to a Boss Cog, these unique toggle options will persist.
+* On a Manager Cog, selecting make skelecog then toggle costume disables the ability to use the zapped effect.
+* Selecting make skelecog while toggle body is disabled still loads in the skelecog's body.
+* Seleting make exectuive/fired/waiter while toggle body is disabled loads in the Cog's necktie.
 
 # Acknowledgements
 * [BoggTech's](https://github.com/BoggTech/) [VisorView](https://github.com/BoggTech/VisorView/tree/main) was used as a base and main inspiration for this program. Our utmost gratitude goes towards them.
