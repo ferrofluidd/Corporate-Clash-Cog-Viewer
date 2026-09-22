@@ -2879,11 +2879,6 @@ class CogViewer(ShowBase):
         if cog_data["name"] in ["ttcc_ene_chainsaw", "ttcc_ene_scapegoat"]:
             self.actor.setTwoSided(True)
 
-        # Conveyancer Belt Fix
-        if "belt" in cog_data:
-            belt = loader.loadModel(cog_data["belt"])
-            belt.reparentTo(self.head)
-
         self.actor.setScale(cog_data["scale"])
 
         self.actor.setPos(pos)
@@ -7144,10 +7139,6 @@ class CogViewer(ShowBase):
                 temp_head.setP(cog_data["headPosP"])
             if "headPosH" in cog_data:
                 temp_head.setH(cog_data["headPosH"])
-
-        if "belt" in cog_data:
-            belt = loader.loadModel(cog_data["belt"])
-            belt.reparentTo(temp_head)
 
         if (not temp_head.find('**/brain').isEmpty()):
             temp_head.find('**/brain').setScale(0.95)
